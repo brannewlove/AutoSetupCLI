@@ -1,0 +1,3 @@
+C:\Users\LeeJH\.gemini\antigravity\scratch\AutoSetupCLI\publish\AutoSetupCLI.pdb
+C:\Users\LeeJH\.gemini\antigravity\scratch\AutoSetupCLI\publish\apps_config.json
+C:\Users\LeeJH\.gemini\antigravity\scratch\AutoSetupCLI\publish\AutoSetupCLI.exe

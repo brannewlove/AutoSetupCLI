@@ -1,0 +1,82 @@
+[
+  {
+    "Key": "privacy-i",
+    "Name": "Privacy-i v6.0 Agent",
+    "Description": "개인정보보호 및 출력물 보안 솔루션",
+    "Enabled": true,
+    "Order": 1,
+    "Engine": "InstallShield",
+    "InstallerPath": "{BaseDir}\\Installers\\Privacy-i\\setup.exe",
+    "SilentArguments": "-s -f1\"{BaseDir}\\Installers\\Privacy-i\\privacy.iss\"",
+    "Detection": {
+      "Type": "Registry",
+      "RegistryKey": "HKLM\\SOFTWARE\\Somansa\\Privacy-i",
+      "ValueName": "Version",
+      "Operator": "Exists"
+    },
+    "SuccessExitCodes": [0, 3010],
+    "RebootExitCodes": [3010],
+    "TimeoutSeconds": 180
+  },
+  {
+    "Key": "fasoo",
+    "Name": "Fasoo DRM Client",
+    "Description": "문서 보안 DRM 에이전트",
+    "Enabled": true,
+    "Order": 2,
+    "Engine": "InstallShield",
+    "InstallerPath": "{BaseDir}\\Installers\\Fasoo\\setup.exe",
+    "SilentArguments": "-s -f1\"{BaseDir}\\Installers\\Fasoo\\fasoo.iss\"",
+    "Detection": {
+      "Type": "Registry",
+      "RegistryKey": "HKLM\\SOFTWARE\\Fasoo.com\\FSRClient",
+      "Operator": "Exists"
+    },
+    "SuccessExitCodes": [0, 3010],
+    "RebootExitCodes": [3010],
+    "TimeoutSeconds": 180
+  },
+  {
+    "Key": "pcoff",
+    "Name": "PC-OFF 근무시간 관리",
+    "Description": "PC 자동 셧다운 및 근무시간 관리 클라이언트",
+    "Enabled": true,
+    "Order": 3,
+    "Engine": "InnoSetup",
+    "InstallerPath": "{BaseDir}\\Installers\\PC-OFF\\setup.exe",
+    "SilentArguments": "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART",
+    "Detection": {
+      "Type": "Registry",
+      "RegistryKey": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\PC-OFF_is1",
+      "Operator": "Exists"
+    },
+    "SuccessExitCodes": [0],
+    "TimeoutSeconds": 120
+  },
+  {
+    "Key": "sindoh",
+    "Name": "SINDOH 복합기 드라이버 (사번 인증)",
+    "Description": "복합기 PCL 드라이버 및 사번 자동 등록",
+    "Enabled": true,
+    "Order": 4,
+    "Engine": "PrinterDriver",
+    "PrinterConfig": {
+      "InfPath": "{BaseDir}\\Installers\\Sindoh\\KOBF7JA_.INF",
+      "DriverName": "Sindoh D410 Series PCL",
+      "PortName": "IP_{PrinterIp}",
+      "PrinterIp": "{PrinterIp}",
+      "PrinterName": "SINDOH 복합기",
+      "DepartmentCodeRegistryKey": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Printers\\SINDOH 복합기\\PrinterDriverData",
+      "DepartmentCodeValueName": "DepartmentCode",
+      "DepartmentCode": "{UserId}"
+    },
+    "Detection": {
+      "Type": "Registry",
+      "RegistryKey": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Printers\\SINDOH 복합기",
+      "Operator": "Exists"
+    },
+    "SuccessExitCodes": [0],
+    "TimeoutSeconds": 120
+  }
+]
+

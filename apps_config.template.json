@@ -1,0 +1,21 @@
+[
+  {
+    "Key": "sample-app",
+    "Name": "새 프로그램 이름",
+    "Description": "프로그램에 대한 간략한 설명",
+    "Enabled": true,
+    "Order": 1,
+    "Engine": "Executable",
+    "InstallerPath": "{BaseDir}\\Installers\\SampleApp\\setup.exe",
+    "SilentArguments": "/S",
+    "Detection": {
+      "Type": "Registry",
+      "RegistryKey": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\SampleApp",
+      "Operator": "Exists"
+    },
+    "SuccessExitCodes": [0],
+    "RebootExitCodes": [3010],
+    "TimeoutSeconds": 180
+  }
+]
+
