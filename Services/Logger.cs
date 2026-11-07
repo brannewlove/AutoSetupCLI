@@ -10,10 +10,27 @@ public class Logger
         _logFilePath = logFilePath;
         if (!string.IsNullOrEmpty(_logFilePath))
         {
-            var dir = Path.GetDirectoryName(_logFilePath);
-            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+            try
             {
-                Directory.CreateDirectory(dir);
+                var dir = Path.GetDirectoryName(_logFilePath);
+                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+            }
+            catch
+            {
+                // 읽기 전용 환경(Windows Sandbox 등)인 경우 임시 디렉터리로 폴백
+                try
+                {
+                    var fallbackDir = Path.Combine(Path.GetTempPath(), "AutoSetupLogs");
+                    Directory.CreateDirectory(fallbackDir);
+                    _logFilePath = Path.Combine(fallbackDir, Path.GetFileName(_logFilePath));
+                }
+                catch
+                {
+                    _logFilePath = null;
+                }
             }
         }
     }

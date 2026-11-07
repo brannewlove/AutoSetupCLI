@@ -200,3 +200,4 @@ C:\Users\LeeJH\.gemini\antigravity\scratch\AutoSetupCLI\src\AutoSetupCLI\obj\Rel
 C:\Users\LeeJH\.gemini\antigravity\scratch\AutoSetupCLI\src\AutoSetupCLI\obj\Release\net8.0-windows\win-x64\AutoSetupCLI.pdb
 C:\Users\LeeJH\.gemini\antigravity\scratch\AutoSetupCLI\src\AutoSetupCLI\obj\Release\net8.0-windows\win-x64\AutoSetupCLI.genruntimeconfig.cache
 C:\Users\LeeJH\.gemini\antigravity\scratch\AutoSetupCLI\src\AutoSetupCLI\obj\Release\net8.0-windows\win-x64\ref\AutoSetupCLI.dll
+C:\Users\LeeJH\.gemini\antigravity\scratch\AutoSetupCLI\src\AutoSetupCLI\obj\Release\net8.0-windows\win-x64\AutoSetupCLI.sourcelink.json

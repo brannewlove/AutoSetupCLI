@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutoSetupCLI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb4672bac58cad7a132e6d602089c5b764d27481")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoSetupCLI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoSetupCLI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

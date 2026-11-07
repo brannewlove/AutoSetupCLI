@@ -98,11 +98,24 @@ public class ExecutionEngine
             return result;
         }
 
-        // 5. 엔진별 사일런트 인자 결정
+        // 5. 엔진별 사일런트 인자 및 실행 파일 결정
         string arguments = ResolveArguments(app);
+        string execFileName = installerPath;
+        string execArguments = arguments;
 
-        _logger.Info($"실행 파일: {installerPath}");
-        _logger.Info($"실행 인자: {arguments}");
+        if (app.Engine == InstallerEngineType.Msi)
+        {
+            execFileName = "msiexec.exe";
+            execArguments = $"/i \"{installerPath}\" {arguments}";
+        }
+        else if (app.Engine == InstallerEngineType.PowerShell)
+        {
+            execFileName = "powershell.exe";
+            execArguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{installerPath}\" {arguments}";
+        }
+
+        _logger.Info($"실행 파일: {execFileName}");
+        _logger.Info($"실행 인자: {execArguments}");
 
         if (dryRun)
         {
@@ -119,8 +132,8 @@ public class ExecutionEngine
         {
             var psi = new ProcessStartInfo
             {
-                FileName = installerPath,
-                Arguments = arguments,
+                FileName = execFileName,
+                Arguments = execArguments,
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardOutput = true,
