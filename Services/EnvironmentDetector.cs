@@ -43,7 +43,9 @@ public class EnvironmentDetector
                 break;
         }
 
-        return rule.Invert ? !matched : matched;
+        bool finalResult = rule.Invert ? !matched : matched;
+        _logger.Debug($"[감지 상세] Type={rule.Type}, Operator={rule.Operator}, Invert={rule.Invert} => 원본결과={matched}, 최종판정={finalResult}");
+        return finalResult;
     }
 
     private bool CheckRegistry(DetectionRule rule)
@@ -68,6 +70,7 @@ public class EnvironmentDetector
                 if (string.IsNullOrEmpty(rule.ValueName))
                 {
                     // 키 자체의 존재 여부
+                    _logger.Debug($"[레지스트리 감지됨] 경로='{fullPath}' ({view})");
                     return true;
                 }
 
@@ -76,6 +79,7 @@ public class EnvironmentDetector
 
                 var actualVal = valObj.ToString() ?? "";
                 var expected = _resolver.Resolve(rule.ExpectedValue ?? "");
+                _logger.Debug($"[레지스트리 값 확인] 경로='{fullPath}\\{rule.ValueName}' ({view}) => 실제값='{actualVal}', 기대값='{expected}'");
 
                 switch (rule.Operator)
                 {

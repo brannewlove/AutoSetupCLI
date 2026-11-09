@@ -31,6 +31,11 @@ public class PrinterManager
 
         if (dryRun)
         {
+            if (File.Exists(infPath))
+                _logger.Success($"[파일 검증] 프린터 INF 파일 확인됨: {infPath}");
+            else
+                _logger.Warn($"[파일 검증] 주의! 프린터 INF 파일이 현재 경로에 없습니다: {infPath}");
+
             _logger.Info($"[DRY-RUN] 드라이버 등록: pnputil /add-driver \"{infPath}\" /install");
             _logger.Info($"[DRY-RUN] 포트 생성: {portName} ({printerIp})");
             _logger.Info($"[DRY-RUN] 프린터 추가: {printerName}");
@@ -38,7 +43,7 @@ public class PrinterManager
             {
                 _logger.Info($"[DRY-RUN] 사번 레지스트리 주입: {deptCode}");
             }
-            return true;
+            return File.Exists(infPath);
         }
 
         // 1. INF 파일 존재 여부 검사
@@ -133,8 +138,18 @@ if (-not $printer) {{
                 RedirectStandardError = true
             };
             using var p = Process.Start(psi);
-            p?.WaitForExit(60000);
-            return p?.ExitCode ?? -1;
+            if (p == null) return -1;
+
+            var stdOut = p.StandardOutput.ReadToEnd();
+            var stdErr = p.StandardError.ReadToEnd();
+            p.WaitForExit(60000);
+
+            if (!string.IsNullOrWhiteSpace(stdOut))
+                _logger.Debug($"[{file} 출력] {stdOut.Trim()}");
+            if (!string.IsNullOrWhiteSpace(stdErr))
+                _logger.Error($"[{file} 오류 상세] {stdErr.Trim()}");
+
+            return p.ExitCode;
         }
         catch (Exception ex)
         {

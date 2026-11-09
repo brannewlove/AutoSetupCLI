@@ -127,6 +127,12 @@ public class Program
 
         // 8. 최종 결과 요약 출력
         PrintSummary(results, executionEngine.RebootRequired, logger);
+        if (!string.IsNullOrEmpty(logger.LogFilePath))
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"📄 상세 실행 및 오류 분석 로그 파일: {logger.LogFilePath}");
+            Console.ResetColor();
+        }
 
         // 종료 코드 반환 (재부팅 필요: 3010, 실패 있음: 1, 성공: 0)
         if (results.Any(r => r.Status == "Failed"))
@@ -192,8 +198,8 @@ public class Program
         Console.WriteLine("==================================================================");
         Console.ResetColor();
 
-        Console.WriteLine(string.Format("{0,-30} | {1,-14} | {2,-8} | {3,-10}", "프로그램 명칭", "상태", "ExitCode", "소요시간"));
-        Console.WriteLine(new string('-', 70));
+        Console.WriteLine(string.Format("{0,-26} | {1,-12} | {2,-8} | {3,-7} | {4}", "프로그램 명칭", "상태", "ExitCode", "시간", "비고 / 오류 원인"));
+        Console.WriteLine(new string('-', 90));
 
         foreach (var r in results)
         {
@@ -205,14 +211,14 @@ public class Program
                 _ => ConsoleColor.Red
             };
 
-            Console.Write(string.Format("{0,-30} | ", Truncate(r.Name, 28)));
+            Console.Write(string.Format("{0,-26} | ", Truncate(r.Name, 24)));
             Console.ForegroundColor = statusColor;
-            Console.Write(string.Format("{0,-14}", r.Status));
+            Console.Write(string.Format("{0,-12}", r.Status));
             Console.ResetColor();
-            Console.WriteLine(string.Format(" | {0,-8} | {1,-10:N1}s", r.ExitCode?.ToString() ?? "-", r.Duration.TotalSeconds));
+            Console.WriteLine(string.Format(" | {0,-8} | {1,-6:N1}s | {2}", r.ExitCode?.ToString() ?? "-", r.Duration.TotalSeconds, r.Message));
         }
 
-        Console.WriteLine(new string('-', 70));
+        Console.WriteLine(new string('-', 90));
 
         int successCount = results.Count(r => r.Status is "Installed" or "RebootRequired");
         int skippedCount = results.Count(r => r.Status == "Skipped");

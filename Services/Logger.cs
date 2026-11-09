@@ -5,6 +5,9 @@ public class Logger
     private readonly string? _logFilePath;
     private readonly object _lock = new();
 
+    public string? LogFilePath => _logFilePath;
+    public string? LogDirectory => string.IsNullOrEmpty(_logFilePath) ? null : Path.GetDirectoryName(_logFilePath);
+
     public Logger(string? logFilePath = null)
     {
         _logFilePath = logFilePath;
