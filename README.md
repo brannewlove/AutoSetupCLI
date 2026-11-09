@@ -59,17 +59,45 @@ AutoSetupCLI/
 
 ---
 
-## 3. 빌드 및 실행 방법
+## 3. 다른 환경에서 빌드 및 배포 패키지 만들기
 
-### 3.1 빌드 및 배포 파일 생성
+다른 PC에서 소스 코드를 직접 수정·빌드하거나, **.NET이 전혀 설치되지 않은 일반 업무용 PC(초기화 PC, WinPE 등)**에서 바로 실행할 수 있는 독립 실행 파일을 만드는 방법입니다.
+
+### 3.1 다른 개발 PC에서 소스 코드를 직접 빌드할 때
+
+1. **필수 설치 도구**: **.NET 8.0 SDK** 이상 설치
+   - Windows PowerShell에서 아래 명령어로 한 번에 설치하거나 [Microsoft .NET 다운로드 페이지](https://dotnet.microsoft.com/download/dotnet/8.0)에서 설치합니다:
+     ```powershell
+     winget install Microsoft.DotNet.SDK.8
+     ```
+2. **소스 복제 및 빌드**:
+   ```powershell
+   # 1. 프로젝트 폴더로 이동
+   cd AutoSetupCLI
+
+   # 2. NuGet 패키지 복원 및 빌드
+   dotnet restore
+   dotnet build -c Release
+   ```
+
+### 3.2 .NET이 없는 대상 PC용 '단일 실행 파일(Single-File)' 배포본 만들기 (권장)
+
+실제 설치 대상 PC(신규 입사자 PC 등)에는 .NET SDK나 런타임이 없는 경우가 많습니다. 아래 명령어로 게시(Publish)하면 **.NET 런타임이 내부에 포함된 단 하나의 `AutoSetupCLI.exe`**가 `./publish` 폴더에 생성됩니다.
+
 ```powershell
-# 일반 빌드
-dotnet build
-
-# 단일 실행 파일 등으로 게시(Publish)할 경우
-dotnet publish -c Release -o ./publish
+# 64비트 Windows용 독립 실행 단일 파일(.exe) 생성
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish
 ```
-> **참고**: 레지스트리(`HKLM`), 윈도우 서비스 제어, 프린터 드라이버 설치 등을 수행하므로 실행 시 **관리자 권한(Administrator)**이 필요합니다.
+
+> **실행 결과 (`./publish` 폴더 구성)**:
+> ```text
+> publish/
+> ├── AutoSetupCLI.exe       # .NET 설치 없이 어디서나 바로 실행 가능한 단일 실행 파일
+> ├── apps_config.json       # 설정 파일 (자동 복사됨)
+> └── Installers/            # 설치 파일 폴더 (자동 복사됨)
+> ```
+> 이 **`publish` 폴더 통째로 USB나 네트워크 공유 폴더에 담아서 다른 PC로 가져가시면** 아무런 사전 설치 없이 곧바로 실행됩니다.
+> *(참고: 레지스트리(`HKLM`), 윈도우 서비스 제어, 프린터 드라이버 설치 등을 수행하므로 실행 시 **관리자 권한(Administrator)**이 필요합니다.)*
 
 ### 3.2 CLI 명령줄 옵션
 
